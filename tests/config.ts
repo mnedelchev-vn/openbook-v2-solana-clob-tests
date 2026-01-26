@@ -1,0 +1,34 @@
+import { PublicKey } from '@solana/web3.js';
+
+const config = {
+    RPC: "https://api.devnet.solana.com",
+    accounts: {
+        programId: "",
+        market: "",
+        quoteMint: "",
+        baseMint: "",
+        openOrders: "" /// This is the position account of the maker in order to be able to register Limit orders in the orderbook
+    },
+    constants: {
+        BooksideSpace: 90944 + 8,
+        EventHeapSpace: 91280 + 8
+    },
+    utils: {
+        pdas: {
+            market: function(marketKp: PublicKey, programId: PublicKey) {
+                return PublicKey.findProgramAddressSync(
+                    [Buffer.from('Market'), marketKp.toBuffer()],
+                    programId
+                )
+            },
+            eventAuthority: function(programId: PublicKey) {
+                return PublicKey.findProgramAddressSync(
+                    [Buffer.from('__event_authority')],
+                    programId
+                )
+            }
+        }
+    }
+}
+
+export default config
